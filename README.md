@@ -9,11 +9,12 @@
 * [x] typescript
 * [x] github 创建
 
-## 新建官方ts模板
+## 从git模板新建
 
 ```
-npm init miniprogram template [options]
+npm init miniprogram template [dirPath] --repo=仓库地址
 ```
+example : `npm init miniprogram template --repo=https://github.com/NewFuture/miniprogram-template`
 
 | option | 描述 |
 |---|---|
