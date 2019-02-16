@@ -1,4 +1,4 @@
-# miniprogram-cli
+# create-miniprogram
 
 小程序开发相关命令行工具，目前支持以下几种模板：
 
@@ -6,17 +6,27 @@
 * 小程序 quickstart（miniprogram）
 * 小程序插件 quickstart（plugin）
 * 小游戏 quickstart（game）
+* [x] typescript
+* [x] github 创建
 
-## 安装
-
-```
-npm install -g @wechat-miniprogram/miniprogram-cli
-```
-
-## 初始化
+## 新建官方ts模板
 
 ```
-miniprogram init [options] [dirPath]
+npm init miniprogram template [options]
+```
+
+| option | 描述 |
+|---|---|
+| -r, --repo | github地址 |
+| -f, --force | 强制初始化项目，可能会覆盖掉目录中已存在的项目 |
+| -p, --proxy | 下载/更新模板时的请求代理 |
+| -n, --newest | 使用线上最新的模板进行项目的初始化 |
+
+
+## 新建官方js模板
+
+```
+npm init miniprogram new
 ```
 
 根据模板来进行项目的初始化
@@ -33,7 +43,7 @@ miniprogram init [options] [dirPath]
 ## 升级
 
 ```
-miniprogram upgrade [options] [dirPath]
+npm init miniprogram upgrade [options] [dirPath]
 ```
 
 根据最新模板对已有项目进行升级。目前仅支持**自定义组件**项目。
@@ -48,7 +58,7 @@ miniprogram upgrade [options] [dirPath]
 ## 缓存
 
 ```
-miniprogram cache [options]
+npm init miniprogram cache [options]
 ```
 
 显示缓存目录。

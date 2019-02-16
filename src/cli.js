@@ -33,6 +33,7 @@ program
  */
 program
   .command('init [dirPath]')
+  .alias('new')
   .description('create a project with template project')
   .option(
     '-t, --type <type>',
