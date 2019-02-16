@@ -1,29 +1,28 @@
+// @ts-check
+
+'using strict'
+
 const path = require('path')
 
 const _ = require('../utils')
 const config = require('../config').customComponent
 
 const now = new Date()
-const templateDir = _.getTemplateDir()
-const templateProject = path.join(templateDir, config.name)
-const globOptions = {
-  cwd: templateProject,
-  nodir: true,
-  dot: true,
-}
+// const templateDir = _.getTemplateDir()
+// const templateProject = path.join(templateDir, config.name)
 
 /**
  * 拷贝 package.json
  */
-async function copyPackageJson(dirPath, options) {
+async function copyPackageJson(templateProject, dirPath, options) {
   let content = await _.readFile(path.join(templateProject, 'package.json'))
 
-  content = content.replace(/("name": ")(?:.*)(")/ig, `$1${options.name}$2`)
-  content = content.replace(/("version": ")(?:.*)(")/ig, `$1${options.version}$2`)
-  content = content.replace(/("url": ")(?:.*)(")/ig, `$1${options.git}$2`)
-  content = content.replace(/("author": ")(?:.*)(")/ig, `$1${options.author}$2`)
-  content = content.replace(/("miniprogram": ")(?:.*)(")/ig, `$1${options.dist}$2`)
-  content = content.replace(/("main": ")(?:.*)(")/ig, `$1${options.dist}/index.js$2`)
+  content = content.replace(/("name": ")(?:.*)(")/gi, `$1${options.name}$2`)
+  content = content.replace(/("version": ")(?:.*)(")/gi, `$1${options.version}$2`)
+  content = content.replace(/("url": ")(?:.*)(")/gi, `$1${options.git}$2`)
+  content = content.replace(/("author": ")(?:.*)(")/gi, `$1${options.author}$2`)
+  content = content.replace(/("miniprogram": ")(?:.*)(")/gi, `$1${options.dist}$2`)
+  content = content.replace(/("main": ")(?:.*)(")/gi, `$1${options.dist}/index.js$2`)
 
   await _.writeFile(path.join(dirPath, 'package.json'), content)
 }
@@ -31,10 +30,13 @@ async function copyPackageJson(dirPath, options) {
 /**
  * 拷贝 license
  */
-async function copyLicense(dirPath, options) {
+async function copyLicense(templateProject, dirPath, options) {
   let content = await _.readFile(path.join(templateProject, 'LICENSE'))
 
-  content = content.replace(/(Copyright\s+\(c\)\s+)(?:.*)(\s*[\r\n])/ig, `$1${now.getFullYear()} ${options.author}$2`)
+  content = content.replace(
+    /(Copyright\s+\(c\)\s+)(?:.*)(\s*[\r\n])/gi,
+    `$1${now.getFullYear()} ${options.author}$2`
+  )
 
   await _.writeFile(path.join(dirPath, 'LICENSE'), content)
 }
@@ -42,7 +44,12 @@ async function copyLicense(dirPath, options) {
 /**
  * 拷贝其他文件
  */
-async function copyOthers(dirPath) {
+async function copyOthers(templateProject, dirPath) {
+  const globOptions = {
+    cwd: templateProject,
+    nodir: true,
+    dot: true
+  }
   // src 目录
   const srcFiles = await _.globSync('src/**/*', globOptions)
 
@@ -54,7 +61,9 @@ async function copyOthers(dirPath) {
 
   // 其他根目录下的文件，如 .gitignore 等
   let rootFiles = await _.globSync('*', globOptions)
-  rootFiles = rootFiles.filter(toolsFile => toolsFile.slice(-12) !== 'package.json' && toolsFile.slice(-7) !== 'LICENSE')
+  rootFiles = rootFiles.filter(
+    toolsFile => toolsFile.slice(-12) !== 'package.json' && toolsFile.slice(-7) !== 'LICENSE'
+  )
 
   const allFiles = [].concat(srcFiles, testFiles, toolsFiles, rootFiles)
   for (let i = 0, len = allFiles.length; i < len; i++) {
@@ -68,13 +77,8 @@ async function copyOthers(dirPath) {
  * 执行初始化命令
  */
 async function init(dirPath, options) {
-  if (options.newest) {
-    // 删除模板，为了拉取新模板
-    await _.removeDir(templateProject)
-  }
-
   // 拉取模板
-  await _.downloadTemplate(config, options.proxy)
+  const templateProject = await _.downloadTemplate(config.download, options.proxy, options.newest)
 
   const isTemlateExist = await _.checkDirExist(templateProject)
 
@@ -86,10 +90,10 @@ async function init(dirPath, options) {
 
   await _.recursiveMkdir(dirPath)
 
-  await copyPackageJson(dirPath, options)
-  await copyLicense(dirPath, options)
+  await copyPackageJson(templateProject, dirPath, options)
+  await copyLicense(templateProject, dirPath, options)
 
-  await copyOthers(dirPath)
+  await copyOthers(templateProject, dirPath)
 }
 
 module.exports = function (dirPath, options = {}) {

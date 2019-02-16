@@ -1,15 +1,19 @@
+// @ts-check
+
+'using strict'
+
 const path = require('path')
 
 const _ = require('../utils')
 const config = require('../config').customComponent
 
-const templateDir = _.getTemplateDir()
-const templateProject = path.join(templateDir, config.name)
-const globOptions = {
-  cwd: templateProject,
-  nodir: true,
-  dot: true,
-}
+// const templateDir = _.getTemplateDir()
+// const templateProject = path.join(templateDir, config.name)
+// const globOptions = {
+//   cwd: '',
+//   nodir: true,
+//   dot: true
+// }
 
 /**
  * check override
@@ -25,7 +29,7 @@ function checkOverride(type, override) {
 /**
  * 升级 package.json
  */
-async function upgradePackageJson(dirPath) {
+async function upgradePackageJson(templateProject, dirPath) {
   const newJsonPath = path.join(templateProject, 'package.json')
   const oldJsonPath = path.join(dirPath, 'package.json')
 
@@ -46,7 +50,13 @@ async function upgradePackageJson(dirPath) {
  * 覆盖其他文件
  */
 // eslint-disable-next-line complexity
-async function copyOthers(dirPath, options) {
+async function copyOthers(templateProject, dirPath, options) {
+  const globOptions = {
+    cwd: templateProject,
+    nodir: true,
+    dot: true
+  }
+
   const override = options.override || []
   let config = []
   let testUtils = []
@@ -96,12 +106,22 @@ async function copyOthers(dirPath, options) {
   }
 
   // eslint-disable-next-line max-len
-  const allFiles = [].concat(config, testUtils, otherTools, otherTestTools, otherConfig, demo, ignore)
+  const allFiles = [].concat(
+    config,
+    testUtils,
+    otherTools,
+    otherTestTools,
+    otherConfig,
+    demo,
+    ignore
+  )
   for (let i = 0, len = allFiles.length; i < len; i++) {
     const filePath = allFiles[i]
 
-    // eslint-disable-next-line no-await-in-loop
-    if (filePath) await _.copyFile(path.join(templateProject, filePath), path.join(dirPath, filePath))
+    if (filePath) {
+      // eslint-disable-next-line no-await-in-loop
+      await _.copyFile(path.join(templateProject, filePath), path.join(dirPath, filePath))
+    }
   }
 }
 
@@ -110,9 +130,7 @@ async function copyOthers(dirPath, options) {
  */
 async function upgrade(dirPath, options) {
   // 删除旧模板，拉取新模板
-  await _.removeDir(templateProject)
-  await _.downloadTemplate(config, options.proxy)
-
+  const templateProject = await _.downloadTemplate(config.download, options.proxy, true)
   const isTemlateExist = await _.checkDirExist(templateProject)
 
   if (!isTemlateExist) {
@@ -124,10 +142,10 @@ async function upgrade(dirPath, options) {
   const override = options.override || []
 
   if (options.force || checkOverride('package.json', override)) {
-    await upgradePackageJson(dirPath)
+    await upgradePackageJson(templateProject, dirPath)
   }
 
-  await copyOthers(dirPath, options)
+  await copyOthers(templateProject, dirPath, options)
 }
 
 module.exports = function (dirPath, options = {}) {

@@ -6,8 +6,9 @@ const glob = require('glob')
 const download = require('download')
 const rimraf = require('rimraf')
 const ProgressBar = require('progress')
+const filenamify = require('filenamify')
 
-const templateDir = path.join(os.tmpdir(), './miniprogram_cli_template')
+const templateDir = path.join(os.tmpdir(), './create-miniprogram')
 
 /**
  * 异步函数封装
@@ -27,7 +28,7 @@ function wrap(func, scope) {
         else resolve(data)
       })
 
-      func.apply((scope || null), args)
+      func.apply(scope || null, args)
     })
   }
 }
@@ -44,6 +45,15 @@ const globSync = wrap(glob)
  */
 function getTemplateDir() {
   return templateDir
+}
+
+/**
+ * 获取URL临时存储目录
+ * @param {string} url
+ */
+function getTempPath(url) {
+  url = url && url.replace(/(^\w+:|^)\/\//, '').replace(/\/archive\/[\w\d\-_]*\.zip$/, '')
+  return path.join(templateDir, filenamify(url, {replacement: '_'}))
 }
 
 /**
@@ -80,7 +90,8 @@ async function copyFile(srcPath, distPath) {
   await recursiveMkdir(path.dirname(distPath))
 
   return new Promise((resolve, reject) => {
-    fs.createReadStream(srcPath).pipe(fs.createWriteStream(distPath))
+    fs.createReadStream(srcPath)
+      .pipe(fs.createWriteStream(distPath))
       .on('finish', () => resolve())
       .on('error', err => reject(err))
   })
@@ -129,7 +140,7 @@ async function checkDirExist(dirPath) {
  * 删除目录
  */
 async function removeDir(dirPath) {
-  let isExist = await checkDirExist(dirPath)
+  const isExist = await checkDirExist(dirPath)
 
   return new Promise((resolve, reject) => {
     if (!isExist) {
@@ -145,18 +156,26 @@ async function removeDir(dirPath) {
 
 /**
  * 下载模板项目
+ * @param {string} url
+ * @param {string} proxy
+ * @param {boolean} [noCache]
  */
-async function downloadTemplate(config, proxy) {
-  const templateProject = path.join(templateDir, config.name)
-  let hasDownload = await checkDirExist(templateProject)
-  let timer
-
-  if (!hasDownload) {
+async function downloadTemplate(url, proxy, noCache) {
+  const templateProject = getTempPath(url)
+  const hasDownload = await checkDirExist(templateProject)
+  if (noCache) {
+    await removeDir(templateProject)
+  }
+  if (noCache || !hasDownload) {
+    let timer
     // mock download progress
     let total = 20
-    const msg = 'now downloading template project'
+    const msg = 'downloading template project'
     const bar = new ProgressBar(':bar :token1', {
-      total, incomplete: '░', complete: '█', clear: true
+      total,
+      incomplete: '░',
+      complete: '█',
+      clear: true
     })
     const tick = () => setTimeout(() => {
       total--
@@ -181,12 +200,12 @@ async function downloadTemplate(config, proxy) {
 
       tick() // 开始
 
-      await download(config.download, templateProject, {
+      await download(url, templateProject, {
         extract: true,
         strip: 1,
         mode: '666',
         headers: {accept: 'application/zip'},
-        proxy,
+        proxy
       })
 
       stop() // 结束
@@ -198,6 +217,7 @@ async function downloadTemplate(config, proxy) {
 
     if (timer) timer = clearTimeout(timer)
   }
+  return templateProject
 }
 
 module.exports = {
@@ -210,4 +230,5 @@ module.exports = {
   getTemplateDir,
   checkDirExist,
   downloadTemplate,
+  getTempPath
 }

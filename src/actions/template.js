@@ -1,9 +1,10 @@
+// @ts-check
+
+'using strict'
+
 const path = require('path')
 
 const _ = require('../utils')
-const configMap = require('../config')
-
-// const templateDir = _.getTemplateDir()
 
 /**
  * 拷贝所有文件
@@ -27,11 +28,9 @@ async function copy(templateProject, dirPath) {
 /**
  * 执行初始化命令
  */
-async function init(dirPath, options) {
-  const config = configMap[options.type]
-  // const templateProject = path.join(templateDir, config.name)
+async function init(dirPath, url, options) {
   // 拉取模板
-  const templateProject = await _.downloadTemplate(config.download, options.proxy, options.newest)
+  const templateProject = await _.downloadTemplate(url, options.proxy, options.newest)
 
   const isTemlateExist = await _.checkDirExist(templateProject)
 
@@ -47,7 +46,8 @@ async function init(dirPath, options) {
 }
 
 module.exports = function (dirPath, options = {}) {
-  init(dirPath, options)
+  dirPath = dirPath || process.cwd()
+  init(dirPath, options.repo, options)
     // eslint-disable-next-line no-console
     .then(() => console.log(`[init done]: ${dirPath}`))
     // eslint-disable-next-line no-console
