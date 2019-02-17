@@ -19,6 +19,8 @@ const config = require('./config')
 // @ts-ignore
 const packageConfig = require('../package.json')
 
+const choices = ['custom-component', 'miniprogram', 'plugin', 'game', 'typescript']
+
 /**
  * 全局参数
  */
@@ -37,13 +39,12 @@ program
   .description('create a project with template project')
   .option(
     '-t, --type [type]',
-    'template project type, only accept "custom-component", "miniprogram", "plugin", "game"',
+    `template type, accept: "${choices.join('" "')}"`,
     // 'miniprogram'
   )
   .option('-n, --newest', 'use newest template to initialize project')
   .action((dirPath, options) => {
     dirPath = dirPath || process.cwd()
-    const choices = ['custom-component', 'miniprogram', 'plugin', 'game']
     console.log(options.type)
     if (choices.indexOf(options.type) < 0) {
       // 未指定类型，则发起询问

@@ -6,7 +6,7 @@
 * 小程序 quickstart（miniprogram）
 * 小程序插件 quickstart（plugin）
 * 小游戏 quickstart（game）
-* [x] typescript
+* [x] typescript模板
 * [x] github 创建
 
 ## 从git模板新建
@@ -14,11 +14,14 @@
 ```
 npm init miniprogram template [dirPath] --repo=仓库地址
 ```
+example : `npm init miniprogram template --repo=NewFuture/miniprogram-template`
 example : `npm init miniprogram template --repo=https://github.com/NewFuture/miniprogram-template`
+
+支持 GitHub,Gitlab和bitbucket
 
 | option | 描述 |
 |---|---|
-| -r, --repo | github地址 |
+| -r, --repo | git地址 [type:]owner/repository[#branch] 或者直接粘贴URL  |
 | -f, --force | 强制初始化项目，可能会覆盖掉目录中已存在的项目 |
 | -p, --proxy | 下载/更新模板时的请求代理 |
 | -n, --newest | 使用线上最新的模板进行项目的初始化 |
