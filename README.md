@@ -20,10 +20,10 @@
 ### 从git模板新建
 
 ```
-npm init miniprogram template [dirPath] --repo=仓库地址
+npm init miniprogram template [dirPath] -r=仓库地址
 ```
-example : `npm init miniprogram template --repo=NewFuture/miniprogram-template`
-example : `npm init miniprogram template --repo=https://github.com/NewFuture/miniprogram-template`
+example : `npm init miniprogram template -r=NewFuture/miniprogram-template`
+example : `npm init miniprogram template -r=https://github.com/NewFuture/miniprogram-template`
 
 支持 GitHub,Gitlab和bitbucket
 
