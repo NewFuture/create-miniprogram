@@ -2,14 +2,22 @@
 
 小程序开发相关命令行工具，目前支持以下几种模板：
 
+* **从任意git模板创建**
+* 支持 **typescript模板**
 * 第三方自定义组件（custom-component）
 * 小程序 quickstart（miniprogram）
 * 小程序插件 quickstart（plugin）
 * 小游戏 quickstart（game）
-* [x] typescript模板
-* [x] github 创建
 
-## 从git模板新建
+## 环境
+
+* `node` >= `4.0.0`
+* `npm` >= `6.0.0` 或者 `yarn`(下列命令中用`yarn create`代替`npm init`即可)
+
+## Usage
+`npm init miniprogram` 查看帮助信息
+
+### 从git模板新建
 
 ```
 npm init miniprogram template [dirPath] --repo=仓库地址
@@ -27,7 +35,7 @@ example : `npm init miniprogram template --repo=https://github.com/NewFuture/min
 | -n, --newest | 使用线上最新的模板进行项目的初始化 |
 
 
-## 新建官方js模板
+### 新建官方js模板
 
 ```
 npm init miniprogram new
@@ -44,7 +52,7 @@ npm init miniprogram new
 | -p, --proxy | 下载/更新模板时的请求代理 |
 | -n, --newest | 使用线上最新的模板进行项目的初始化 |
 
-## 升级
+### 升级
 
 ```
 npm init miniprogram upgrade [options] [dirPath]
@@ -59,7 +67,7 @@ npm init miniprogram upgrade [options] [dirPath]
 | -f, --force | 强制升级项目，会覆盖掉原有项目中的构建相关文件 |
 | -p, --proxy | 下载/更新模板时的请求代理 |
 
-## 缓存
+### 缓存管理
 
 ```
 npm init miniprogram cache [options]
