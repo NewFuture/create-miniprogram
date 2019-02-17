@@ -130,7 +130,7 @@ async function copyOthers(templateProject, dirPath, options) {
  */
 async function upgrade(dirPath, options) {
   // 删除旧模板，拉取新模板
-  const templateProject = await _.downloadTemplate(config.download, options.proxy, true)
+  const templateProject = await _.download(config.download, options.proxy, true)
   const isTemlateExist = await _.checkDirExist(templateProject)
 
   if (!isTemlateExist) {

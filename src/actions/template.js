@@ -30,7 +30,7 @@ async function copy(templateProject, dirPath) {
  */
 async function init(dirPath, url, options) {
   // 拉取模板
-  const templateProject = await _.downloadTemplate(url, options.proxy, options.newest)
+  const templateProject = await _.download(url, options.proxy, options.newest)
 
   const isTemlateExist = await _.checkDirExist(templateProject)
 

@@ -2,9 +2,12 @@
   "name": "create-miniprogram",
   "version": "0.1.0",
   "description": "create miniprogram cli",
-  "bin": {
-    "create-miniprogram": "src/cli.js"
-  },
+  "keywords": [
+    "miniprogram",
+    "cli",
+    "template"
+  ],
+  "bin": "src/cli.js",
   "main": "index.js",
   "engines": {
     "npm": ">=6.0.0",

@@ -1,11 +1,13 @@
+// @ts-check
+
+'using strict'
+
 const fs = require('fs')
 const path = require('path')
 const os = require('os')
 
 const glob = require('glob')
-const download = require('download')
 const rimraf = require('rimraf')
-const ProgressBar = require('progress')
 const filenamify = require('filenamify')
 
 const templateDir = path.join(os.tmpdir(), './create-miniprogram')
@@ -52,7 +54,7 @@ function getTemplateDir() {
  * @param {string} url
  */
 function getTempPath(url) {
-  url = url && url.replace(/(^\w+:|^)\/\//, '').replace(/\/archive\/[\w\d\-_]*\.zip$/, '')
+  url = url && url.replace(/(^\w+:|^)\/\//, '').replace(/\/archive\/[\w\d\-_]*\.zip$/, '').split('?')[0]
   return path.join(templateDir, filenamify(url, {replacement: '_'}))
 }
 
@@ -154,71 +156,6 @@ async function removeDir(dirPath) {
   })
 }
 
-/**
- * 下载模板项目
- * @param {string} url
- * @param {string} proxy
- * @param {boolean} [noCache]
- */
-async function downloadTemplate(url, proxy, noCache) {
-  const templateProject = getTempPath(url)
-  const hasDownload = await checkDirExist(templateProject)
-  if (noCache) {
-    await removeDir(templateProject)
-  }
-  if (noCache || !hasDownload) {
-    let timer
-    // mock download progress
-    let total = 20
-    const msg = 'downloading template project'
-    const bar = new ProgressBar(':bar :token1', {
-      total,
-      incomplete: '░',
-      complete: '█',
-      clear: true
-    })
-    const tick = () => setTimeout(() => {
-      total--
-      bar.tick({token1: msg})
-
-      if (total !== 1 && !bar.complete) tick()
-    }, 500)
-    const stop = () => {
-      while (!bar.complete) bar.tick({token1: msg})
-    }
-
-    try {
-      timer = setTimeout(() => {
-        // 超过一分钟没下载完，直接退出进程
-        if (!bar.complete) {
-          stop()
-          // eslint-disable-next-line no-console
-          console.log('download faild!')
-          process.exit(1)
-        }
-      }, 60 * 1000)
-
-      tick() // 开始
-
-      await download(url, templateProject, {
-        extract: true,
-        strip: 1,
-        mode: '666',
-        headers: {accept: 'application/zip'},
-        proxy
-      })
-
-      stop() // 结束
-    } catch (err) {
-      stop()
-      // eslint-disable-next-line no-console
-      console.error(err)
-    }
-
-    if (timer) timer = clearTimeout(timer)
-  }
-  return templateProject
-}
 
 module.exports = {
   recursiveMkdir,
@@ -229,6 +166,5 @@ module.exports = {
   removeDir,
   getTemplateDir,
   checkDirExist,
-  downloadTemplate,
   getTempPath
 }

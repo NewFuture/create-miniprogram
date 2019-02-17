@@ -36,22 +36,16 @@ program
   .alias('new')
   .description('create a project with template project')
   .option(
-    '-t, --type <type>',
+    '-t, --type [type]',
     'template project type, only accept "custom-component", "miniprogram", "plugin", "game"',
-    'miniprogram'
+    // 'miniprogram'
   )
   .option('-n, --newest', 'use newest template to initialize project')
   .action((dirPath, options) => {
     dirPath = dirPath || process.cwd()
-
     const choices = ['custom-component', 'miniprogram', 'plugin', 'game']
-
-    if (options.type === 'node' || options.type === 'php') {
-      // eslint-disable-next-line no-console
-      console.log(`template project [ ${options.type} ] has been deprecated`)
-    }
-
-    if (!options.type || choices.indexOf(options.type) < 0) {
+    console.log(options.type)
+    if (choices.indexOf(options.type) < 0) {
       // 未指定类型，则发起询问
       inquirer
         .prompt([
@@ -111,7 +105,7 @@ program
           return answers
         })
         // eslint-disable-next-line no-console
-        .catch(err => console.error(err))
+        .catch(console.error)
     } catch (err) {
       // ignore
       upgrade(dirPath, options)
@@ -123,7 +117,7 @@ program
  */
 program
   .command('cache')
-  .description('show the path of template projects cache')
+  .description('manage the template projects cache')
   .option('-c, --clear', 'clear cache')
   .action(cache)
 
