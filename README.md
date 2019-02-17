@@ -20,10 +20,10 @@
 ### 从git模板新建
 
 ```
-npm init miniprogram template [dirPath] -r=仓库地址
+npm init miniprogram template [dirPath] -r 仓库地址
 ```
-example : `npm init miniprogram template -r=NewFuture/miniprogram-template`
-example : `npm init miniprogram template -r=https://github.com/NewFuture/miniprogram-template`
+example : `npm init miniprogram template -r NewFuture/miniprogram-template`
+example : `npm init miniprogram template -r https://github.com/NewFuture/miniprogram-template`
 
 支持 GitHub,Gitlab和bitbucket
 
@@ -80,3 +80,10 @@ npm init miniprogram cache [options]
 | option | 描述 |
 |---|---|
 | -c, --clear | 清空缓存的模板 |
+
+### 全局安装
+
+```
+npm i create-miniprogram -g
+create-miniprogram
+```
