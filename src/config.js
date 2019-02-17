@@ -1,6 +1,5 @@
 // @ts-check
 
-'using strict'
 
 module.exports = {
   customComponent: {

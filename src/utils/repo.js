@@ -1,7 +1,5 @@
 // @ts-check
 
-'using strict'
-
 /**
  * Normalize a repo string.
  *

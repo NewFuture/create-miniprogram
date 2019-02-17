@@ -1,7 +1,5 @@
 // @ts-check
 
-'using strict'
-
 const _ = require('../utils')
 
 function cache(options) {

@@ -2,7 +2,6 @@
 
 // @ts-check
 
-'using strict'
 
 const path = require('path')
 const fs = require('fs')
@@ -45,7 +44,6 @@ program
   .option('-n, --newest', 'use newest template to initialize project')
   .action((dirPath, options) => {
     dirPath = dirPath || process.cwd()
-    console.log(options.type)
     if (choices.indexOf(options.type) < 0) {
       // 未指定类型，则发起询问
       inquirer

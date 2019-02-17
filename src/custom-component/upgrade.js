@@ -1,7 +1,5 @@
 // @ts-check
 
-'using strict'
-
 const path = require('path')
 
 const _ = require('../utils')

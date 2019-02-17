@@ -1,7 +1,5 @@
 // @ts-check
 
-'using strict'
-
 const download = require('download')
 const ProgressBar = require('progress')
 
