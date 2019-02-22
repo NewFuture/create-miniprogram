@@ -120,6 +120,7 @@ program
   .option('-r, --repo <repo>', 'template git repo', config.typescript.download)
   .option('-n, --no-cache', 'use newest template wihout cache to initialize project')
   .action((dirPath, options) => {
+    // eslint-disable-next-line no-console
     console.warn('[deprecated]', 'use `$0 <repo> [dirPath]` !')
     template(options.repo, dirPath, options)
   })

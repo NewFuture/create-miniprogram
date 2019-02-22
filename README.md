@@ -28,9 +28,11 @@ example : `npm init miniprogram https://github.com/NewFuture/miniprogram-templat
 
 支持 GitHub,Gitlab和bitbucket
 
+* `repo`:  git地址, [type:]owner/repository[#branch] 或者直接粘贴URL  
+* `dirPath`: 本地目录, 默认当前目录
+
 | option | 描述 |
 |---|---|
-| -r, --repo | git地址 [type:]owner/repository[#branch] 或者直接粘贴URL  |
 | -f, --force | 强制初始化项目，可能会覆盖掉目录中已存在的项目 |
 | -p, --proxy | 下载/更新模板时的请求代理 |
 | -n, --no-cache | 使用线上最新的模板进行项目的初始化 |
