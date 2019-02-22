@@ -23,13 +23,12 @@
 npm init miniprogram 仓库地址 [dirPath]
 ```
 
-example : `npm init miniprogram NewFuture/miniprogram-template`
-example : `npm init miniprogram https://github.com/NewFuture/miniprogram-template`
-
-支持 GitHub,Gitlab和bitbucket
-
-* `repo`:  git地址, [type:]owner/repository[#branch] 或者直接粘贴URL  
+* `repo`:  git地址, [type:]owner/repository[#branch] 或者直接粘贴URL ,支持 GitHub,Gitlab和bitbucket
 * `dirPath`: 本地目录, 默认当前目录
+
+examples
+* `npm init miniprogram NewFuture/miniprogram-template`
+* `npm init miniprogram https://github.com/NewFuture/miniprogram-template`
 
 | option | 描述 |
 |---|---|
