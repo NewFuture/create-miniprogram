@@ -20,10 +20,11 @@
 ### 从git模板新建
 
 ```
-npm init miniprogram template [dirPath] -r 仓库地址
+npm init miniprogram 仓库地址 [dirPath]
 ```
-example : `npm init miniprogram template -r NewFuture/miniprogram-template`
-example : `npm init miniprogram template -r https://github.com/NewFuture/miniprogram-template`
+
+example : `npm init miniprogram NewFuture/miniprogram-template`
+example : `npm init miniprogram https://github.com/NewFuture/miniprogram-template`
 
 支持 GitHub,Gitlab和bitbucket
 
@@ -32,7 +33,7 @@ example : `npm init miniprogram template -r https://github.com/NewFuture/minipro
 | -r, --repo | git地址 [type:]owner/repository[#branch] 或者直接粘贴URL  |
 | -f, --force | 强制初始化项目，可能会覆盖掉目录中已存在的项目 |
 | -p, --proxy | 下载/更新模板时的请求代理 |
-| -n, --newest | 使用线上最新的模板进行项目的初始化 |
+| -n, --no-cache | 使用线上最新的模板进行项目的初始化 |
 
 
 ### 新建官方js模板
@@ -50,7 +51,7 @@ npm init miniprogram new
 | -t, --type | 项目的初始化所使用的模板 |
 | -f, --force | 强制初始化项目，可能会覆盖掉目录中已存在的项目 |
 | -p, --proxy | 下载/更新模板时的请求代理 |
-| -n, --newest | 使用线上最新的模板进行项目的初始化 |
+| -n, --no-cache | 使用线上最新的模板进行项目的初始化 |
 
 ### 升级
 

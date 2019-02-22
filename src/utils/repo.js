@@ -1,6 +1,25 @@
 // @ts-check
 
 /**
+ *@see https://github.com/flipxfx/download-git-repo
+ */
+const DIRECT_REPO = /^(?:(direct):([^#]+)(?:#(.+))?)$/
+/**
+ * @see https://github.com/flipxfx/download-git-repo
+ * bitbucket:flipxfx/download-git-repo-fixture#my-branch
+ */
+const GIT_REPO = /^(?:(github|gitlab|bitbucket):)?(?:(.+):)?([^/]+)\/([^#]+)(?:#(.+))?$/
+
+const GIT_HTTP = /^https?:\/\/(([\w-]+)\.[\w.-]*)\/([\w-]+)\/([\w.-]+)(?:\/(?:tree|blob|branch)\/([\w.-]+))?\/?/
+
+/**
+ * @param {string} repo repo string
+ */
+function validate(repo) {
+  return DIRECT_REPO.test(repo) || GIT_HTTP.test(repo) || GIT_REPO.test(repo)
+}
+
+/**
  * Normalize a repo string.
  *
  * @param {String} repo
@@ -8,8 +27,7 @@
  */
 function normalize(repo) {
   // console.log(repo)
-  let regex = /^(?:(direct):([^#]+)(?:#(.+))?)$/
-  let match = regex.exec(repo)
+  let match = DIRECT_REPO.exec(repo)
   let type = ''
   let origin = ''
   if (match) {
@@ -19,13 +37,11 @@ function normalize(repo) {
       checkout: match[3] || 'master'
     }
   } else if (repo.startsWith('http')) {
-    regex = /^https?:\/\/(([\w-]+)\.[\w.-]*)\/([\w-]+)\/([\w.-]+)(?:\/(?:tree|blob|branch)\/([\w.-]+))?\/?/
-    match = regex.exec(repo)
+    match = GIT_HTTP.exec(repo)
     origin = match[1]
     type = match[2]
   } else {
-    regex = /^(?:(github|gitlab|bitbucket):)?(?:(.+):)?([^/]+)\/([^#]+)(?:#(.+))?$/
-    match = regex.exec(repo)
+    match = GIT_REPO.exec(repo)
     type = match[1] || 'github'
     origin = match[2] || (type + '.com')
   }
@@ -94,5 +110,6 @@ function getUrl(repo, clone) {
 
 module.exports = {
   normalize,
-  getUrl
+  getUrl,
+  validate
 }

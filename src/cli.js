@@ -28,20 +28,21 @@ program
   .allowUnknownOption(false)
   .option('-f, --force', 'all files will be overrided except src folder and test case files')
   .option('-p, --proxy <url>', 'http/https request proxy')
+  // .arguments('[dirPath]')
 
 /**
  * 初始化相关
  */
 program
-  .command('init [dirPath]')
-  .alias('new')
+  .command('new [dirPath]')
+  .alias('init')
   .description('create a project with template project')
   .option(
     '-t, --type [type]',
     `template type, accept: "${choices.join('" "')}"`,
     // 'miniprogram'
   )
-  .option('-n, --newest', 'use newest template to initialize project')
+  .option('-n, --no-cache', 'use newest template to initialize project')
   .action((dirPath, options) => {
     dirPath = dirPath || process.cwd()
     if (choices.indexOf(options.type) < 0) {
@@ -64,16 +65,6 @@ program
       init(dirPath, options)
     }
   })
-
-/**
- * git模板
- */
-program
-  .command('template [dirPath]')
-  .description('create a project with template project')
-  .option('-r, --repo <repo>', 'template git repo', config.typescript.download)
-  .option('-n, --newest', 'use newest template to initialize project')
-  .action((dirPath, options) => template(dirPath, options))
 
 /**
  * 升级相关
@@ -119,6 +110,25 @@ program
   .description('manage the template projects cache')
   .option('-c, --clear', 'clear cache')
   .action(cache)
+
+/**
+ * git模板
+ */
+program
+  .command('template [dirPath]')
+  .description('create a project with template project')
+  .option('-r, --repo <repo>', 'template git repo', config.typescript.download)
+  .option('-n, --no-cache', 'use newest template wihout cache to initialize project')
+  .action((dirPath, options) => {
+    console.warn('[deprecated]', 'use `$0 <repo> [dirPath]` !')
+    template(options.repo, dirPath, options)
+  })
+
+program
+  .command('* <repo> [dirPath]')
+  .description('create a project with <repo> template project in dirPath')
+  .option('-n, --no-cache', 'use newest template wihout cache to initialize project')
+  .action((repo, dirPath, options) => template(repo, dirPath, options))
 
 program.parse(process.argv)
 

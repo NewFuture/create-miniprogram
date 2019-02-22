@@ -44,9 +44,21 @@ async function init(dirPath, url, options) {
   await copy(templateProject, dirPath)
 }
 
-module.exports = function (dirPath, options = {}) {
+
+/**
+ * create template
+ * @param {string} repo
+ * @param {string} dirPath
+ * @param {Object} options
+ */
+module.exports = function template(repo, dirPath, options = {}) {
+  if (!_.validateRepo(repo)) {
+    // eslint-disable-next-line no-console
+    console.error('invalid repo:', repo)
+    process.exit(1)
+  }
   dirPath = dirPath || process.cwd()
-  init(dirPath, options.repo, options)
+  init(dirPath, repo, options)
     // eslint-disable-next-line no-console
     .then(() => console.log(`[init done]: ${dirPath}`))
     // eslint-disable-next-line no-console
