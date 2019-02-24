@@ -18,7 +18,9 @@
   },
   "scripts": {
     "build": "babel src -d dist",
-    "lint": "eslint src/*"
+    "lint": "eslint src/*",
+    "test:template": "node dist/cli.js NewFuture/miniprogram-template template",
+    "test": "npm run test:template"
   },
   "babel": {
     "presets": [
