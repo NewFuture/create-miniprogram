@@ -13,3 +13,5 @@ coverage
 test/**/demo
 
 dist/
+
+temp

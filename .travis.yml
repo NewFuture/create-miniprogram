@@ -11,6 +11,15 @@ git:
     depth: 1
 
 script:
-  - npm run lint
-  - npm run build
-  - npm test
+    - npm run lint
+    - npm test
+
+# 自动发布
+deploy:
+    - provider: npm
+      email: npmjs@newfututre.cc
+      api_key: "${NPM_TOKEN}"
+      skip_cleanup: true
+      on:
+          tags: true
+          branch: master

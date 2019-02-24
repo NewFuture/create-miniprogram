@@ -1,6 +1,5 @@
 // @ts-check
 
-
 const path = require('path')
 
 const _ = require('../utils')
@@ -29,7 +28,7 @@ async function copy(templateProject, dirPath) {
  */
 async function init(dirPath, url, options) {
   // 拉取模板
-  const templateProject = await _.download(url, options.proxy, options.newest)
+  const templateProject = await _.download(url, options.proxy, !options.cache)
 
   const isTemlateExist = await _.checkDirExist(templateProject)
 
@@ -57,10 +56,23 @@ module.exports = function template(repo, dirPath, options = {}) {
     console.error('invalid repo:', repo)
     process.exit(1)
   }
+  const cwd = dirPath && path.resolve(process.cwd(), dirPath)
   dirPath = dirPath || process.cwd()
+
   init(dirPath, repo, options)
+    .then((v) => {
+      // eslint-disable-next-line no-console
+      console.log(`[copy template]: ${dirPath}`)
+      if (options.install) {
+        // eslint-disable-next-line no-console
+        console.log('start install dependences...')
+        return _.install(cwd)
+      } else {
+        return v
+      }
+    })
     // eslint-disable-next-line no-console
-    .then(() => console.log(`[init done]: ${dirPath}`))
+    .then(() => console.log('[The installation is complete!]'))
     // eslint-disable-next-line no-console
     .catch(err => console.error(err))
 }

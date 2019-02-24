@@ -76,7 +76,7 @@ async function copyOthers(templateProject, dirPath) {
  */
 async function init(dirPath, options) {
   // 拉取模板
-  const templateProject = await _.download(config.download, options.proxy, options.newest)
+  const templateProject = await _.download(config.download, options.proxy, !options.cache)
 
   const isTemlateExist = await _.checkDirExist(templateProject)
 

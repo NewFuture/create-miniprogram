@@ -28,21 +28,22 @@ program
   .allowUnknownOption(false)
   .option('-f, --force', 'all files will be overrided except src folder and test case files')
   .option('-p, --proxy <url>', 'http/https request proxy')
-  // .arguments('[dirPath]')
+  .option('-n, --no-cache', 'use newest template wihout cache to initialize project')
+  .option('--no-install', 'skip npm dependences installation')
+
 
 /**
  * 初始化相关
  */
 program
   .command('new [dirPath]')
-  .alias('init')
   .description('create a project with template project')
+  .alias('init')
   .option(
     '-t, --type [type]',
     `template type, accept: "${choices.join('" "')}"`,
     // 'miniprogram'
   )
-  .option('-n, --no-cache', 'use newest template to initialize project')
   .action((dirPath, options) => {
     dirPath = dirPath || process.cwd()
     if (choices.indexOf(options.type) < 0) {
@@ -118,7 +119,6 @@ program
   .command('template [dirPath]')
   .description('create a project with template project')
   .option('-r, --repo <repo>', 'template git repo', config.typescript.download)
-  .option('-n, --no-cache', 'use newest template wihout cache to initialize project')
   .action((dirPath, options) => {
     // eslint-disable-next-line no-console
     console.warn('[deprecated]', 'use `$0 <repo> [dirPath]` !')
@@ -128,12 +128,10 @@ program
 program
   .command('* <repo> [dirPath]')
   .description('create a project with <repo> template project in dirPath')
-  .option('-n, --no-cache', 'use newest template wihout cache to initialize project')
-  .action((repo, dirPath, options) => template(repo, dirPath, options))
+  .action((repo, dirPath) => template(repo, dirPath, program.opts()))
 
-program.parse(process.argv)
-
-if (!program.args.length) {
-  // show help with empty command
-  program.help()
-}
+// program.parse(process.argv)
+// if (!program.args.length) {
+//   // show help with empty command
+//   program.help()
+// }

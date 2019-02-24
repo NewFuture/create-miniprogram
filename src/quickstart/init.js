@@ -31,7 +31,7 @@ async function init(dirPath, options) {
   const config = configMap[options.type]
   // const templateProject = path.join(templateDir, config.name)
   // 拉取模板
-  const templateProject = await _.download(config.download, options.proxy, options.newest)
+  const templateProject = await _.download(config.download, options.proxy, !options.cache)
 
   const isTemlateExist = await _.checkDirExist(templateProject)
 
