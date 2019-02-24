@@ -130,8 +130,8 @@ program
   .description('create a project with <repo> template project in dirPath')
   .action((repo, dirPath) => template(repo, dirPath, program.opts()))
 
-// program.parse(process.argv)
-// if (!program.args.length) {
-//   // show help with empty command
-//   program.help()
-// }
+program.parse(process.argv)
+if (!program.args.length) {
+  // show help with empty command
+  program.help()
+}
