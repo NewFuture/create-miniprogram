@@ -1,5 +1,7 @@
 # create-miniprogram
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/NewFuture/create-miniprogram.svg)](https://greenkeeper.io/)
+
 小程序开发相关命令行工具，目前支持以下几种模板：
 
 * **从任意git模板创建**
