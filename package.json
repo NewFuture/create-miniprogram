@@ -1,6 +1,6 @@
 {
   "name": "create-miniprogram",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "create miniprogram cli",
   "keywords": [
     "create",
@@ -23,7 +23,7 @@
     "lint": "eslint src/*",
     "prepack": "npm run build",
     "test:template": "node dist/cli.js NewFuture/miniprogram-template temp",
-    "pretest": "npm run build",    
+    "pretest": "npm run build",
     "test": "npm run test:template"
   },
   "babel": {
