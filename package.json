@@ -63,7 +63,7 @@
     "commander": "^3.0.0",
     "download": "^7.1.0",
     "filenamify": "^4.0.0",
-    "glob": "^7.1.4",
+    "glob": "^7.1.5",
     "inquirer": "^7.0.0",
     "progress": "^2.0.0",
     "rimraf": "^3.0.0"
