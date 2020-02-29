@@ -64,7 +64,7 @@
     "download": "^7.1.0",
     "filenamify": "^4.0.0",
     "glob": "^7.1.4",
-    "inquirer": "^7.0.0",
+    "inquirer": "7.0.4",
     "progress": "^2.0.0",
     "rimraf": "^3.0.0"
   }
