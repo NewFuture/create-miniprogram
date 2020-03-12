@@ -59,7 +59,7 @@
     "eslint-plugin-promise": "^4.0.1"
   },
   "dependencies": {
-    "@babel/runtime": "^7.4.4",
+    "@babel/runtime": "^7.8.7",
     "commander": "^4.0.0",
     "download": "^7.1.0",
     "filenamify": "^4.0.0",
