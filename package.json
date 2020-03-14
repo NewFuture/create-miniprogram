@@ -60,7 +60,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.4.4",
-    "commander": "^4.0.0",
+    "commander": "^5.0.0",
     "download": "^7.1.0",
     "filenamify": "^4.0.0",
     "glob": "^7.1.4",
